@@ -1,3 +1,4 @@
+import serial
 from serial import Serial
 import time
 
@@ -24,13 +25,15 @@ class Serial_control:
         self.serial.close()
 
     def write_servo(self, id, ang):
-        angleData = ang
+        angledata = ang
         if id == 1:
-            angleData = 2 * angleData
-        self.serial.write(('&' + str(id) + ':' + str(angleData)).encode())
+            angledata = 2 * angledata
+        self.serial.write(('&' + str(id) + ':' + str(angledata)).encode())
 
     def read_status(self):
-        status = "clean"
+        ser_status = self.serial.isOpen()
+        status = "Working Clean"
+        print(f"Serial Open: {ser_status}")
         print(f"status: {status}")
 
     def read_sensors(self):
@@ -38,5 +41,5 @@ class Serial_control:
         print(f"Sensor status: {status}")
 
     def run_effector(self):
-        status = "ON"
+        status = "Waiting"
         print(f"Effector status: {status}")
