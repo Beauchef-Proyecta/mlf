@@ -35,7 +35,7 @@ class MK2Robot:
         self.q = []
         self.T = []
         self.pose = []
-        self.update_pose(MK2Robot.HOME_0, MK2Robot.HOME_1, MK2Robot.HOME_2)
+        self._update_pose(MK2Robot.HOME_0, MK2Robot.HOME_1, MK2Robot.HOME_2)
 
     def _update_pose(self, q0, q1, q2):
 
