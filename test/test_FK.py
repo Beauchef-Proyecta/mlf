@@ -1,7 +1,10 @@
-from core.serial_control import Serial_control
+import sys
+sys.path.append('/home/pi/core')
+from serial_control import Serial_control
+#from core.serial_control import Serial_control #for pc
 import time
 
-robot_serial = Serial_control("COM6")
+robot_serial = Serial_control()
 robot_serial.run_serial()
 for i in range(10):
     robot_serial.write_servo(3, -4 * i + 90)

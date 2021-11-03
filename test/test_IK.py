@@ -1,5 +1,9 @@
-from core.serial_control import Serial_control
-from core.mk2robot import MK2Robot
+import sys
+sys.path.append('/home/pi/core')
+from serial_control import Serial_control
+from mk2robot import MK2Robot
+#from core.serial_control import Serial_control #for pc
+#from core.mk2robot import MK2Robot #for pc
 import time
 import numpy as np
 
