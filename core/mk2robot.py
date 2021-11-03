@@ -1,5 +1,4 @@
 import numpy as np
-import time
 
 
 def translation_along_zaxis(a):

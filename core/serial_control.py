@@ -1,15 +1,17 @@
-def run_serial(self, com):
-    # BLOQUE SERIAL
-    global ser
-    ser = serial
-    try:
-        ser = serial.Serial(com, 115200, timeout=1)  # ojito con la ruta
-        # ser = serial.Serial("/dev/ttyUSB0", 115200, timeout=1)
-        serial_port = "Open"
-        print("The port is available")
+import serial
 
-    except serial.serialutil.SerialException:
-        print("The port is at use")
-        ser.close()
-        ser.open()
-    # BLOQUE SERIAL
+
+class Serial_control:
+    def __init__(self, port="/dev/ttyUSB0"):
+        self.port = port
+
+    def run_serial(self):
+        ser = serial
+        try:
+            ser = serial.Serial(self.port, 115200, timeout=1)
+            print("The port is available")
+
+        except serial.serialutil.SerialException:
+            print("The port is at use")
+            ser.close()
+            ser.open()
