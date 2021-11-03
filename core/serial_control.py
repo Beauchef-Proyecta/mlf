@@ -32,14 +32,16 @@ class Serial_control:
 
     def read_status(self):
         ser_status = self.serial.isOpen()
-        status = "Working Clean"
         print(f"Serial Open: {ser_status}")
-        print(f"status: {status}")
+        if ser_status:
+            status = "Working Clean"
+            print(f"status: {status}")
+
 
     def read_sensors(self):
-        status = "clean"
+        status = "Not implemented"
         print(f"Sensor status: {status}")
 
     def run_effector(self):
-        status = "Waiting"
+        status = "Not implemented"
         print(f"Effector status: {status}")
