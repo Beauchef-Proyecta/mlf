@@ -3,15 +3,15 @@ from serial import Serial
 import time
 
 
-class Serial_control:
+class SerialControl:
 
     def __init__(self, port="/dev/ttyUSB0"):
         self.port = port
         self.serial = None
 
-    def run_serial(self):
+    def open_serial(self):
         try:
-            self.serial = Serial(self.port, 115200, timeout=1)
+            self.serial = Serial(self.port, 115200, timeout=1, write_timeout=0.1)
             print("The port is available")
             serial_port = "Open"
             time.sleep(2)
@@ -20,7 +20,7 @@ class Serial_control:
             self.serial.close()
             self.serial.open()
 
-    def close_Serial(self):
+    def close_serial(self):
         time.sleep(0.2)
         self.serial.close()
 
@@ -36,7 +36,6 @@ class Serial_control:
         if ser_status:
             status = "Working Clean"
             print(f"status: {status}")
-
 
     def read_sensors(self):
         status = "Not implemented"

@@ -1,11 +1,11 @@
 import sys
 sys.path.append('/home/pi/mlf/core')
-from serial_control import Serial_control
-#from core.serial_control import Serial_control #for pc
+from serial_control import SerialControl
+#from core.serial_control import SerialControl #for pc
 import time
 
-robot_serial = Serial_control()
-robot_serial.run_serial()
+robot_serial = SerialControl()
+robot_serial.open_serial()
 for i in range(10):
     robot_serial.write_servo(3, -4 * i + 90)
     robot_serial.write_servo(2, 4 * i + 90)
