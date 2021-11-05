@@ -2,7 +2,7 @@
 
 ## Cómo conectarse vía remota al robot a través de Ngrok
 - Entrar a ngrok https://ngrok.com/
-- Ingresar (login) credenciales de cada grupo cc2201mlf+<project group>@gmail.com ; ngrok pass
+- Ingresar (login) credenciales de cada grupo ```cc2201mlf+<project group>@gmail.com ``` ; ```ngrok pass```
 - Ir a Endpoints->Status, donde se encontrarán las opciones de conexión (TCP para ssh, HTTP para ver stream de la cámara)
 - Si el stream está corriendo basta con entrar a la dirección HTTP para ver la imagen captada por la cámara del robot
 ### Conexión al robot vía SSH con Ngrok
