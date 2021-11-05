@@ -20,5 +20,6 @@ Ahora tendrás una terminal dentro del robot y tendrás acceso a este repositori
 
 - Activar el ambiente virtual ```workon mlf```
 - Ir al directorio del repositorio ```cd mlf/```
-- Correr algún test de la carpeta ```test/``` (ej:```python test/test_IK.py```)
+- Cambiar a rama dev del repositorio ```git checkout dev```
+- Correr algún test de cinemática de la carpeta ```test/``` (```python test/test_IK.py``` o ```python test/test_FK.py```)
 - Ver el robot a través del stream c:
