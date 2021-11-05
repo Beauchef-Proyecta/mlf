@@ -48,3 +48,9 @@ with open(args.filename) as gcode:
 
     goal_XYZ = np.array([X_list, Y_list, Z_list])
     goal(goal_XYZ)
+
+robot_serial.read_status()
+robot_serial.read_sensors()
+robot_serial.run_effector()
+
+robot_serial.close_serial()
