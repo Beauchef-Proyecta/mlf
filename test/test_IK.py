@@ -27,4 +27,4 @@ robot_serial.read_status()
 robot_serial.read_sensors()
 robot_serial.run_effector()
 
-robot_serial.close_Serial()
+robot_serial.close_serial()
