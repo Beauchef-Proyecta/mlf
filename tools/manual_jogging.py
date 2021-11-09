@@ -24,6 +24,9 @@ try:
             robot_serial.write_servo(1, 45 + q0)
             robot_serial.write_servo(2, 90 - q1)
             robot_serial.write_servo(3, q2 + q1)
+            print(f"q0 = {q0}")
+            print(f"q1 = {90-q1}")
+            print(f"q2 = {q1+q2}")
             time.sleep(0.4)
 
         elif selector == "ang":
