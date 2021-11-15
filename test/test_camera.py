@@ -1,12 +1,14 @@
-import sys
-sys.path.append('..')
+
+
+import cv2
 import datetime
 import imutils
+import os
+import sys
 import time
-import cv2
 
-
-from camera import VideoStream
+sys.path.insert(0, os.path.abspath('..'))
+from mlf.core.camera import VideoStream
 
 vs = VideoStream(src=1)
 vs.start()

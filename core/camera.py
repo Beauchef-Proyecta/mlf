@@ -36,9 +36,7 @@ class VideoStream:
 
     def read(self):
         # return the current frame
-        image = self.stream.read()
-        ret, jpeg = cv2.imencode('.jpg', image)
-        return jpeg.tobytes()
+        return self.stream.read()
 
     def stop(self):
         # stop the thread and release any resources

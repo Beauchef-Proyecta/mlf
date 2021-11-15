@@ -1,3 +1,4 @@
+import cv2
 import os
 import sys
 import threading
@@ -21,8 +22,9 @@ def gen(camera):
     #get camera frame
     while True:
         frame = camera.read()
+        ret, jpeg = cv2.imencode('.jpg', frame)
         yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+               b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n\r\n')
 
 @app.route('/video_feed')
 def video_feed():
