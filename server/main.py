@@ -6,6 +6,7 @@ import time
 from flask import Flask, render_template, Response, request
 
 from video_feed import VideoFeed
+from robot_controller import RobotController
 
 
 # App Globals (do not edit)
@@ -21,6 +22,13 @@ video_feed_builder = VideoFeed()
 def video_feed():
     return Response(video_feed_builder.gen(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+# TODO: how to pass GET/POST parameters???
+robot_controller = RobotController()
+@app.route('/move_robot')
+def move_robot():
+    return Response(robot_controller.set_position_xyz(),)
 
 
 if __name__ == '__main__':
