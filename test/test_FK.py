@@ -1,8 +1,10 @@
+import os
 import sys
-sys.path.append('/home/pi/mlf/core')
-from serial_control import SerialControl
-#from core.serial_control import SerialControl #for pc
 import time
+
+sys.path.insert(0, os.path.abspath('..'))
+
+from mlf.core.serial_control import SerialControl
 
 robot_serial = SerialControl()
 robot_serial.open_serial()

@@ -1,5 +1,3 @@
-
-
 import cv2
 import datetime
 import imutils
