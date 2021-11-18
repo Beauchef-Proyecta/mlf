@@ -30,7 +30,7 @@ class MK2Robot:
     HOME_1 = np.pi
     HOME_2 = np.pi
 
-    def __init__(self, link_lengths):
+    def __init__(self, link_lengths = [55, 39, 135, 147, 66.3]):
         self.a = link_lengths
         self.q = []
         self.T = []
