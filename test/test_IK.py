@@ -1,11 +1,13 @@
-import sys
-sys.path.append('/home/pi/mlf/core')
-from serial_control import SerialControl
-from mk2robot import MK2Robot
-#from core.serial_control import SerialControl #for pc
-#from core.mk2robot import MK2Robot #for pc
-import time
+
 import numpy as np
+import os
+import sys
+import time
+
+sys.path.insert(0, os.path.abspath('..'))
+
+from mlf.core.serial_control import SerialControl
+from mlf.core.mk2robot import MK2Robot
 
 robot = MK2Robot(link_lengths=[55, 39, 135, 147, 66.3])
 robot_serial = SerialControl()
