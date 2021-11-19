@@ -5,16 +5,17 @@ import time
 import numpy as np
 
 try: 
+    USE_PI_CAMERA = True
     from imutils.video.pivideostream import PiVideoStream
 except ModuleNotFoundError:
-    usePiCamera = False
+    USE_PI_CAMERA = False
     from imutils.video.webcamvideostream import WebcamVideoStream
 
 
 class VideoStream:
     def __init__(self, src=0, resolution=(320, 240), framerate=32):
         # check to see if the picamera module should be used
-        if usePiCamera:
+        if USE_PI_CAMERA:
             self.stream = PiVideoStream(resolution=resolution,
             framerate=framerate)
         # otherwise, we are using OpenCV so initialize the webcam
