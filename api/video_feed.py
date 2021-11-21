@@ -9,7 +9,7 @@ from mlf.core.camera import VideoStream
 class VideoFeed():
 
     def __init__(self):
-        self.video_stream = VideoStream(src=2)
+        self.video_stream = VideoStream(src=0)
 
     def gen(self):
         """ Generator function (see more about `yield` documentation)
