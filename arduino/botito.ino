@@ -16,6 +16,11 @@ int poser = 0; // initial position of server
 int val; // initial value of input
 #define INPUT_SIZE 30
 
+#define HOME_L0 90
+#define HOME_L1 90
+#define HOME_L2 90
+#define HOME_GRIPPER 90
+
 
 //Homing
 void axis_home() {
@@ -23,7 +28,6 @@ void axis_home() {
   L1.write(90);
   L2.write(90);
   eff.write(90);
-
 }
 
 void setup() {
