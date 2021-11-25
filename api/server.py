@@ -3,7 +3,7 @@ import sys
 import threading
 import time
 
-from flask import Flask, render_template, Response, request
+from flask import Flask, render_template, Response, request, make_response
 
 from video_feed import VideoFeed
 from robot_control import RobotController
@@ -22,6 +22,13 @@ video_feed_builder = VideoFeed()
 def video_feed():
     return Response(video_feed_builder.gen(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@app.route('/single_frame')
+def single_frame():
+    response = make_response(video_feed_builder.grab_single_frame())
+    response.headers['Content-Type'] = 'image/jpg'
+    return response
 
 
 # TODO: how to pass GET/POST parameters???
