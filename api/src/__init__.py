@@ -1,13 +1,19 @@
 from flask import Flask
-from ..video_feed import VideoFeed
-from ..robot_control import RobotController
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath('..'))
+from mlf.core.camera import VideoStream
+
+from mlf.api.video_feed import VideoFeed
+from mlf.api.robot_control import RobotController
 
 video_feed_builder = VideoFeed()
 robot_controller = RobotController()
 
 def create_app() -> Flask:
     """Factory pattern of Flask Application"""
-    app: Flask = Flask(__name__)
+    app: Flask = Flask(__name__, template_folder='../templates')
 
     # aca se pueden inicializar mas cosas como bases de datos
 
