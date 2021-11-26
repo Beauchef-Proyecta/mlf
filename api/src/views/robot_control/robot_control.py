@@ -1,5 +1,8 @@
+import os
+import sys
+sys.path.insert(0, os.path.abspath('...'))
 from flask import Response, Blueprint, request
-from ... import robot_controller
+from mlf.api.src import robot_controller
 
 robot_control_bp = Blueprint("robot_control", __name__)
 

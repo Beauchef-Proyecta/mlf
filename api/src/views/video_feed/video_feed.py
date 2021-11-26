@@ -1,5 +1,9 @@
+import os
+import sys
+sys.path.insert(0, os.path.abspath('...'))
+
 from flask import Response, Blueprint, make_response
-from ... import video_feed_builder
+from mlf.api.src import video_feed_builder
 
 video_feed_bp = Blueprint("video_feed_bp", __name__)
 

@@ -1,10 +1,13 @@
+import os
+import sys
+sys.path.insert(0, os.path.abspath('..'))
 from flask import Flask
+
 import os
 import sys
 
 sys.path.insert(0, os.path.abspath('..'))
 from mlf.core.camera import VideoStream
-
 from mlf.api.video_feed import VideoFeed
 from mlf.api.robot_control import RobotController
 
