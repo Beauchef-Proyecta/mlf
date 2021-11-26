@@ -30,12 +30,12 @@ class MK2Robot:
     HOME_1 = np.pi
     HOME_2 = np.pi
 
-    def __init__(self, link_lengths):
+    def __init__(self, link_lengths = [55, 39, 135, 147, 66.3]):
         self.a = link_lengths
         self.q = []
         self.T = []
         self.pose = []
-        self.update_pose(MK2Robot.HOME_0, MK2Robot.HOME_1, MK2Robot.HOME_2)
+        self._update_pose(MK2Robot.HOME_0, MK2Robot.HOME_1, MK2Robot.HOME_2)
 
     def _update_pose(self, q0, q1, q2):
 
@@ -131,3 +131,11 @@ class MK2Robot:
             Z_pos[i] = np.round(self.pose[i][2, 3], 3)
 
         return [X_pos, Y_pos, Z_pos]
+
+    def servo_equivalent_angles(self, q):
+        s = []
+        s[0] = q[0] * 2
+        s[1] = q[1] + np.pi/2
+        s[2] = np.pi - q[2]
+        return s
+
