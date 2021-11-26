@@ -1,6 +1,9 @@
+import os
+import sys
+sys.path.insert(0, os.path.abspath('..'))
 from flask import Flask
-from ..video_feed import VideoFeed
-from ..robot_control import RobotController
+from mlf.api.video_feed import VideoFeed
+from mlf.api.robot_control import RobotController
 
 video_feed_builder = VideoFeed()
 robot_controller = RobotController()
