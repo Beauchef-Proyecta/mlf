@@ -3,7 +3,7 @@
 Este repositorio contiene el firmware que usa cada uno de los brazos robotizados de la fábrica, escrito para placas Arduino Nano. Más abajo están las instrucciones para usar la interfaz por línea de comandos de Arduino, `arduino-cli`, la cual es muy útil para cargar el programa desde cada Raspberry Pi.
 
 
-## Cómo usar `arduino-cli`
+## Configurar `arduino-cli`
 
 Para configurar el entorno de trabajo es necesario instalar `arduino-cli`, lo cual puede hacerse con tu gestor de paquetes favorito:
 En linux:
@@ -16,7 +16,7 @@ En Mac:
 brew install arduino-cli
 ```
 
-Luego, verificar que están disponibles las herramientas para las tarjetas Arduino con controladores AVR. Esto se realiza con el comando `arduino-cli core search`
+Luego, verificar que están disponibles las herramientas para las tarjetas Arduino con controladores AVR. Esto se realiza con el comando `core search`
 
 ```sh
 arduino-cli core search
@@ -35,7 +35,7 @@ Luego, se debe instalar las herramientas para tarjetas AVR:
 ```sh
 arduino-cli core install arduino:avr
 ```
-Para comprobar que la instalación está correcta se puede utilizar el comando `arduino-cli core list`:
+Para comprobar que la instalación está correcta se puede utilizar el comando `core list`:
 ```sh
 arduino-cli core list
 ID          Installed Latest Name                                      
@@ -48,9 +48,5 @@ Finalmente, para compilar el sketch es necesario navegar hasta esta carpeta y us
 cd <path_to_mlf>/arduino-firmware
 arduino-cli compile -b arduino:avr:nano
 ```
-arduino-cli core list
-arduino-cli compile -b arduino:avr:nano
-arduino-cli compile -b arduino:avr:nano
-arduino-cli compile -b arduino:avr:nano
-arduino-cli compile -b arduino:avr:nano
-arduino-cli compile -b arduino:avr:nano
+
+## Cargar un programa a la tarjeta
