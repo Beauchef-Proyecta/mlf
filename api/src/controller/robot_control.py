@@ -3,7 +3,7 @@ import os
 import sys
 import time
 
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('...'))
 from mlf.core.mk2robot import MK2Robot
 from mlf.core.serial_control import SerialControl
 
