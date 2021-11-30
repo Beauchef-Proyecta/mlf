@@ -5,7 +5,7 @@ sys.path.insert(0, os.path.abspath('...'))
 from flask import Response, Blueprint, make_response
 from mlf.api.src import video_feed_builder
 
-video_feed_bp = Blueprint("video_feed", __name__)
+video_feed_bp = Blueprint("video_feed_bp", __name__)
 
 @video_feed_bp.route("/video_feed", methods=["GET"])
 def video_feed():
