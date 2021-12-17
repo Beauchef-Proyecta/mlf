@@ -26,5 +26,15 @@ class RobotController:
         self.serial.write_servo(1, s[1])
         self.serial.write_servo(2, s[2])
 
+    def move_belt(self,direction):
+        if direction == "F":
+            self.serial.write_servo(7,1)
+        elif direction == "B":
+            self.serial.write_servo(7,0)
 
+    def turn_servo_eff(self,ang):
+        self.serial.write_servo(4,ang)
+   
+    def electro_status(self,status):
+        self.serial.write_servo(5,status)
 
