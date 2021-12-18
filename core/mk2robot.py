@@ -134,8 +134,8 @@ class MK2Robot:
 
     def servo_equivalent_angles(self, q):
         s = [0,0,0]
-        s[0] = q[0] * 2
-        s[1] = q[1] + np.pi/2
-        s[2] = np.pi - q[2]
+        s[0] = q[0] * 2 + 90
+        s[1] = -q[1] + 90
+        s[2] = q[1] + q[2]
         return s
 
