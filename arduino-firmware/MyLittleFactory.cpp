@@ -28,7 +28,7 @@ int Joint::set_position(int *params) {
 
 Joint joints[3];
 
-int joint_set_position_wrapper(int *params) {
+int set_joint_position(int *params) {
     int id = params;
     joints[id].set_position(params++);
 }
@@ -38,12 +38,16 @@ int joint_set_position_wrapper(int *params) {
 func_ptr_t command_list[256];
 
 void build_command_list() {
-    command_list[0] = joint_set_position_wrapper;
-    command_list[1] = joint_set_position_wrapper;
-    command_list[2] = joint_set_position_wrapper;
+    command_list[0] = set_joint_position;
+    command_list[1] = set_joint_position;
+    command_list[2] = set_joint_position;
 }
 
-/* Setup */
+
+
+/******************
+  Peripheral Setup
+*******************/
 void set_gpio() {
     joints[0] = Joint(SERVO_J0, 0);
     joints[1] = Joint(SERVO_J1, 0);
@@ -55,6 +59,8 @@ void axis_home() {}
 
 /* move_axis */
 void move_axis(int servoId, int position){
+  int params[] = {servoId, position};
+  command_list[0](params);
     /*
     if (servoId == 1) {
       base.write(position);
