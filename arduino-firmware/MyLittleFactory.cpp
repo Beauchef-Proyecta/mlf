@@ -70,6 +70,7 @@ void send_robot_to_home() {}
 char* read_command() {
     char buffer[3];
     Serial.readBytes(buffer, 3);
+    return buffer;
 };
 
 int execute_command(char* params) { return command_list[0]((int*)params); };
