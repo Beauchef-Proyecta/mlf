@@ -43,8 +43,6 @@ void build_command_list() {
     command_list[2] = set_joint_position;
 }
 
-
-
 /******************
   Peripheral Setup
 *******************/
@@ -58,55 +56,9 @@ void set_gpio() {
 void axis_home() {}
 
 /* move_axis */
-void move_axis(int servoId, int position){
-  int params[] = {servoId, position};
-  command_list[0](params);
-    /*
-    if (servoId == 1) {
-      base.write(position);
-
-    }
-
-    if (servoId == 2) {
-      L1.write(position);
-
-    }
-
-    if (servoId == 3) {
-      L2.write(position);
-
-    }
-
-    if (servoId == 4) {
-      eff.write(position);
-
-    }
-    if (servoId == 5) {
-      if (position == 1) {
-        digitalWrite(pin_grip, HIGH);
-      }
-      if (position == 0) {
-        digitalWrite(pin_grip, LOW);
-      }
-    }
-    if (servoId == 6) {
-      if (position == 1) {
-        digitalWrite(pin_belt, HIGH);
-      }
-      if (position == 0) {
-        digitalWrite(pin_belt, LOW);
-      }
-    }
-    if (servoId == 7) {
-      if (position == 1) {
-        digitalWrite(pin_belt_turn, HIGH); //forward
-      }
-      if (position == 0) {
-        digitalWrite(pin_belt_turn, LOW); //backward
-      }
-    }
-    */
-
+int move_axis(int servoId, int position) {
+    int params[] = {servoId, position};
+    return command_list[0](params);
 };
 
 /* main */
