@@ -8,32 +8,29 @@ https://www.arduino.cc/en/Hacking/LibraryTutorial
 https://www.arduino.cc/en/Reference/APIStyleGuide
 */
 
-#include "MyLittleFactory.h"
 
+#include <Arduino.h>
 #include <Servo.h>
 
-Joint::Joint(){};
+#include "MyLittleFactory.h"
+#include "component_joints.h"
 
-Joint::Joint(int pin, int position) {
-    this->servo.attach(pin);
-    int params[] = {pin, position};
-    this->set_position(params);
-};
-
-int Joint::set_position(int *params) {
-    int val = params;
-    this->position = val;
-    this->servo.write(val);
-};
+/**
+ * @brief Prepare all components and wrapper functions
+ *
+ */
 
 Joint joints[3];
 
-int set_joint_position(int *params) {
+int set_joint_position(int* params) {
     int id = params;
     joints[id].set_position(params++);
 }
 
-/* Command List */
+/**
+ * @brief Build Command List
+ *
+ */
 
 func_ptr_t command_list[256];
 
@@ -43,25 +40,38 @@ void build_command_list() {
     command_list[2] = set_joint_position;
 }
 
-/******************
-  Peripheral Setup
-*******************/
-void set_gpio() {
-    joints[0] = Joint(SERVO_J0, 0);
-    joints[1] = Joint(SERVO_J1, 0);
-    joints[2] = Joint(SERVO_J2, 0);
+/**
+ * @brief Set the up gpio object
+ *
+ */
+void setup_gpio() {
+    joints[0] = Joint(SERVO_J0, HOME_J0);
+    joints[1] = Joint(SERVO_J1, HOME_J1);
+    joints[2] = Joint(SERVO_J2, HOME_J2);
+
+    Serial.begin(115200);
 }
 
-/* Homing */
-void axis_home() {}
+/**
+ * @brief Set joint position to home default
+ *
+ */
+void send_robot_to_home() {}
 
 /* move_axis */
-int move_axis(int servoId, int position) {
-    int params[] = {servoId, position};
-    return command_list[0](params);
+
+/**
+ * @brief Parse serial input
+ *
+ * @param bytes
+ * @return int
+ */
+
+char* read_command() {
+    char buffer[3];
+    Serial.readBytes(buffer, 3);
 };
 
-/* main */
-void do_everything(){
+int execute_command(char* params) { return command_list[0]((int*)params); };
 
-};
+void write_response(int response) {};

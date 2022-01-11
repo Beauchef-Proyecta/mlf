@@ -8,7 +8,6 @@ https://www.arduino.cc/en/Hacking/LibraryTutorial
 https://www.arduino.cc/en/Reference/APIStyleGuide
 */
 
-#include <Servo.h>
 
 /* GPIO DEFINITIONS */
 #define SERVO_J0 3
@@ -19,33 +18,23 @@ https://www.arduino.cc/en/Reference/APIStyleGuide
 #define BELT_STATUS 8     // manage belt status
 #define BELT_DIRECTION 4  // manage belt forward-backward
 
-/* PROGRAM PARAMETERS */
-#define INPUT_SIZE 30
-
 /* HOME VALUES */
 #define HOME_J0 90
 #define HOME_J1 90
 #define HOME_J2 90
 #define HOME_GRIPPER 90
 
-class Joint {
-   private:
-    Servo servo;
-    int position;
-
-   public:
-    Joint();
-    Joint(int pin, int position);
-
-    int set_position(int* params);
-};
 
 typedef int (*func_ptr_t)(int*);
 
-void set_gpio();
+void build_command_list();
 
-void axis_home();
+void setup_gpio();
 
-int move_axis(int servoId, int position);
+void send_robot_to_home();
 
-void do_everything();
+char* read_command();
+
+int execute_command(char* params);
+
+void write_response(int response);

@@ -1,16 +1,17 @@
-
 #include "MyLittleFactory.h"
 
-
+int response;
+char* cmd;
 
 void setup() {
   //Attach servos
-  Serial.begin(115200);
   //Homing inicial
-  set_gpio();
-  axis_home();
+  setup_gpio();
 
 }
 void loop() {
-  do_everything();
+  cmd = read_command();
+  Serial.print(cmd);
+  response = execute_command(cmd);
+  write_response(response);
 }
