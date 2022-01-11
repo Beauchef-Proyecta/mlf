@@ -22,9 +22,19 @@ class RobotController:
         self.model.inverse_kinematics(x, y, z)
         q = self.model.q
         s = self.model.servo_equivalent_angles(q)
-        self.serial.write_servo(0, s[0])
-        self.serial.write_servo(1, s[1])
-        self.serial.write_servo(2, s[2])
+        self.serial.write_servo(1, s[0])
+        self.serial.write_servo(2, s[1])
+        self.serial.write_servo(3, s[2])
 
+    def move_belt(self,direction):
+        if direction == "F":
+            self.serial.write_servo(7,1)
+        elif direction == "B":
+            self.serial.write_servo(7,0)
 
+    def turn_servo_eff(self,ang):
+        self.serial.write_servo(4,ang)
+   
+    def electro_status(self,status):
+        self.serial.write_servo(5,status)
 

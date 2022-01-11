@@ -7,6 +7,7 @@ void setup() {
   //Attach servos
   Serial.begin(115200);
   //Homing inicial
+  set_gpio();
   axis_home();
 
 }
