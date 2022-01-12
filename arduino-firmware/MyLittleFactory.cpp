@@ -23,10 +23,8 @@ https://www.arduino.cc/en/Reference/APIStyleGuide
 Joint joints[3];
 
 int set_joint_position(char params[]) {
-  
-    Serial.println(params[0]);
-    Serial.println(params[1]);
-    int id = params[0];
+    int id = params[0] & 3;
+    Serial.print(id);
     return joints[id].set_position(params[1]);
 }
 
@@ -35,25 +33,30 @@ int set_joint_position(char params[]) {
  *
  */
 
-func_ptr_t command_list[256];
+func_ptr_t command_list[256] = {};
 
 void build_command_list() {
-    command_list[0x61] = set_joint_position;
-    command_list[0x62] = set_joint_position;
-    command_list[0x63] = set_joint_position;
+  // IMPORTANT: DO NOT assign 0x00; it is reserved for no-command!!
+    command_list[SET_JOINT_POSITION] = set_joint_position;
 }
 
 /**
  * @brief Set the up gpio object
  *
  */
+
+void setup_serial(){  
+  Serial.begin(115200);
+  Serial.setTimeout(20);
+  Serial.flush();
+  delay(100);
+}
+ 
 void setup_gpio() {
     joints[0] = Joint(SERVO_J0, HOME_J0);
     joints[1] = Joint(SERVO_J1, HOME_J1);
     joints[2] = Joint(SERVO_J2, HOME_J2);
 
-    Serial.begin(115200);
-    Serial.setTimeout(20);
     build_command_list();
 }
 
@@ -63,7 +66,6 @@ void setup_gpio() {
  */
 void send_robot_to_home() {}
 
-/* move_axis */
 
 /**
  * @brief Parse serial input
@@ -71,20 +73,31 @@ void send_robot_to_home() {}
  * @param bytes
  * @return int
  */
-int incomingByte = 0; // for incoming serial data
-void read_command(char* buffer) { // send data only when you receive data:
+
+void read_command(char buffer[]) { // send data only when you receive data:
+  memset(buffer, 0, 8);
   if (Serial.available() > 0){
-    Serial.readBytesUntil(',',buffer,8);
+    Serial.readBytesUntil(0xFE,buffer,8);
   }
   
 };
 
+/**
+ * @brief execute command
+ * 
+ * @param cmd 
+ * @return int 
+ */
+
 int execute_command(char cmd[]) { 
-  int cmd_index = cmd[0];
-  if (cmd_index != '.') {
-    if (command_list[cmd_index] != 0) 
-      Serial.println(command_list[cmd_index](cmd), DEC);
+  int cmd_index = (cmd[0] & 0xF0);
+  int response;
+  if (command_list[cmd_index] != 0) {
+    Serial.print("recieved command: 0x");
+    Serial.print(cmd_index, HEX);
+    Serial.print("-> status:");
+    
+    response = command_list[cmd_index](cmd);
+    Serial.println(response, HEX);
   }
 };
-
-void write_response(int response) {};
