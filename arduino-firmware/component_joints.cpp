@@ -2,13 +2,13 @@
 
 Joint::Joint(){};
 
-Joint::Joint(int pin, int position) {
+Joint::Joint(int pin, uint8_t position) {
     this->servo.attach(pin);
     int params[] = {pin, position};
     this->set_position(position);
 };
 
-int Joint::set_position(int position) {
+uint8_t Joint::set_position(uint8_t position) {
     this->position = position;
     this->servo.write(position);
     return this->position;

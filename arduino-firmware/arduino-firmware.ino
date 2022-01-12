@@ -1,16 +1,12 @@
 #include "MyLittleFactory.h"
 
-
-char cmd[8];
-
 void setup() {
-  //Attach servos
-  //Homing inicial
-  setup_serial();
-  setup_gpio();
-
+    setup_serial();
+    setup_components();
+    build_command_list();
 }
 void loop() {
-  read_command(cmd);
-  execute_command(cmd);
+    char cmd[8];
+    read_command(cmd);
+    execute_command(cmd);
 }

@@ -3,11 +3,11 @@
 class Joint {
    private:
     Servo servo;
-    int position;
+    uint8_t position;
 
    public:
     Joint();
-    Joint(int pin, int position);
+    Joint(int pin, uint8_t position);
 
-    int set_position(int position);
+    uint8_t set_position(uint8_t position);
 };
