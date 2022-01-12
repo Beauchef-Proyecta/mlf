@@ -9,5 +9,5 @@ class Joint {
     Joint();
     Joint(int pin, int position);
 
-    int set_position(int* params);
+    int set_position(int position);
 };

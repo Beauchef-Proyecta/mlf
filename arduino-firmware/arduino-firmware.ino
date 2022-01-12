@@ -1,7 +1,7 @@
 #include "MyLittleFactory.h"
 
 int response;
-char* cmd;
+char cmd[8];
 
 void setup() {
   //Attach servos
@@ -10,8 +10,7 @@ void setup() {
 
 }
 void loop() {
-  cmd = read_command();
-  Serial.print(cmd);
+  memset(cmd, '.', 8);
+  read_command(cmd);
   response = execute_command(cmd);
-  write_response(response);
 }

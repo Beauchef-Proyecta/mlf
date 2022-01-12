@@ -22,9 +22,12 @@ https://www.arduino.cc/en/Reference/APIStyleGuide
 
 Joint joints[3];
 
-int set_joint_position(int* params) {
-    int id = params;
-    joints[id].set_position(params++);
+int set_joint_position(char params[]) {
+  
+    Serial.println(params[0]);
+    Serial.println(params[1]);
+    int id = params[0];
+    return joints[id].set_position(params[1]);
 }
 
 /**
@@ -35,9 +38,9 @@ int set_joint_position(int* params) {
 func_ptr_t command_list[256];
 
 void build_command_list() {
-    command_list[0] = set_joint_position;
-    command_list[1] = set_joint_position;
-    command_list[2] = set_joint_position;
+    command_list[0x61] = set_joint_position;
+    command_list[0x62] = set_joint_position;
+    command_list[0x63] = set_joint_position;
 }
 
 /**
@@ -50,6 +53,8 @@ void setup_gpio() {
     joints[2] = Joint(SERVO_J2, HOME_J2);
 
     Serial.begin(115200);
+    Serial.setTimeout(20);
+    build_command_list();
 }
 
 /**
@@ -66,13 +71,20 @@ void send_robot_to_home() {}
  * @param bytes
  * @return int
  */
-
-char* read_command() {
-    char buffer[3];
-    Serial.readBytes(buffer, 3);
-    return buffer;
+int incomingByte = 0; // for incoming serial data
+void read_command(char* buffer) { // send data only when you receive data:
+  if (Serial.available() > 0){
+    Serial.readBytesUntil(',',buffer,8);
+  }
+  
 };
 
-int execute_command(char* params) { return command_list[0]((int*)params); };
+int execute_command(char cmd[]) { 
+  int cmd_index = cmd[0];
+  if (cmd_index != '.') {
+    if (command_list[cmd_index] != 0) 
+      Serial.println(command_list[cmd_index](cmd), DEC);
+  }
+};
 
 void write_response(int response) {};

@@ -9,7 +9,7 @@ https://www.arduino.cc/en/Reference/APIStyleGuide
 */
 
 
-/* GPIO DEFINITIONS */
+/**GPIO DEFINITIONS */
 #define SERVO_J0 3
 #define SERVO_J1 5
 #define SERVO_J2 6
@@ -25,7 +25,7 @@ https://www.arduino.cc/en/Reference/APIStyleGuide
 #define HOME_GRIPPER 90
 
 
-typedef int (*func_ptr_t)(int*);
+typedef int (*func_ptr_t)(char*);
 
 void build_command_list();
 
@@ -33,8 +33,8 @@ void setup_gpio();
 
 void send_robot_to_home();
 
-char* read_command();
+void read_command(char* buffer);
 
-int execute_command(char* params);
+int execute_command(char* cmd);
 
 void write_response(int response);
