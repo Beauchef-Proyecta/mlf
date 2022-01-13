@@ -2,6 +2,15 @@
 import serial
 from serial import Serial
 import time
+import numpy as np
+
+HEADER          = 0xA0
+CMD_JOINT       = 0x10
+CMD_BELT        = 0x20
+CMD_GRIPPER     = 0x30
+CMD_MAGNET      = 0x40
+CMD_PROXIMITY   = 0xA0
+CMD_LASER       = 0xB0
 
 class SerialControl:
 
@@ -11,7 +20,7 @@ class SerialControl:
 
     def open_serial(self):
         try:
-            self.serial = Serial(self.port, 115200, timeout=0.1, write_timeout=0.1)
+            self.serial = Serial(self.port, 115200)
             print("The port is available")
             serial_port = "Open"
             time.sleep(2)
@@ -25,19 +34,27 @@ class SerialControl:
 
     def send_data(self, data):
         self.serial.write(data)
-        return self.serial.readline()
+        time.sleep(0.01)
+        return self.serial.read(2)
+
+    def build_serial_msg(self, cmd: int, params: list):
+        data = [HEADER, len(params) + 1, cmd]
+        for p in params:
+            data.append(p)
+        return bytearray(data)
 
 
 if __name__ == "__main__":
-    ser = SerialControl("/dev/tty.wchusbserial14140")
+    ser = SerialControl("/dev/tty.wchusbserial14230")
     ser.open_serial()
     i=0
     while True:
         i += 1
-        i %= 180
+        angle = int((90 * np.sin(i* np.pi/180))+90) & 0xFF
+        i %= 360
 
-        data = bytearray([0x10, i, 0xFE])
+        data = ser.build_serial_msg(0x10, [angle, angle, angle])
         s = ser.send_data(data)
-        # print(f"{i}: {s}")
+        print(f"[{i}: {angle}]->{s}")
 
     
