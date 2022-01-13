@@ -1,4 +1,3 @@
-
 /**
 Library for MK2Robot control and some effectors we use in The Little Factory
 see project repo @ https://github.com/Beauchef-Proyecta/mlf
@@ -23,50 +22,53 @@ void setup_components() {
     joints[0] = Joint(SERVO_J0, HOME_J0);
     joints[1] = Joint(SERVO_J1, HOME_J1);
     joints[2] = Joint(SERVO_J2, HOME_J2);
-}
+};
 
 /** Wrapper functions */
 
 int set_joint_position(char params[]) {
-    int id = params[0] & 3;
-    Serial.print(id);
-    return joints[id].set_position((uint8_t)params[1]);
-}
+    byte res = 0;
+    for (int id = 0; id < 3; id++) {
+        res += joints[id].set_position((uint8_t)params[id + 1]);
+    }
+    return (int)res;
+};
 
-/** Command List ===== */
+/** Command List */
 
 func_ptr_t command_list[256] = {};
 
-void build_command_list() {
-    // IMPORTANT: DO NOT assign 0x00; it is reserved for no-command!!
+void build_command_list() { 
     command_list[CMD_JOINT] = set_joint_position;
-}
+    
+ };
 
-/** COMMUNICATIONS === */
+/** COMMUNICATIONS¡ */
 
 void setup_serial() {
     Serial.begin(115200);
-    Serial.setTimeout(20);
     Serial.flush();
     delay(100);
-}
+};
 
-void read_command(char buffer[]) {  // send data only when you receive data:
-    memset(buffer, 0, 8);
-    if (Serial.available() > 0) {
-        Serial.readBytesUntil(0xFE, buffer, 8);
+bool read_command(char buffer[]) {  // send data only when you receive data:
+    int n;
+    memset(buffer, 0, 16);
+    if (Serial.available() > 1) {
+        if (Serial.read() == HEADER) {
+            n = Serial.read();
+            Serial.readBytes(buffer, n);
+            return true;
+        }
     }
+    return false;
 };
 
 int execute_command(char cmd[]) {
-    int cmd_index = cmd[0];
-    int response;
-    if (command_list[cmd_index] != 0) {
-        Serial.print("recieved command: 0x");
-        Serial.print(cmd_index, HEX);
-        Serial.print("-> status:");
-
-        response = command_list[cmd_index](cmd);
-        Serial.println(response, HEX);
+    int response = 0xFF;
+    if (command_list[cmd[0]] != 0) {
+        response = command_list[cmd[0]](cmd);
     }
+    Serial.print(cmd[0], HEX);
+    Serial.print(response, HEX);
 };

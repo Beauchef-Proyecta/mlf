@@ -6,7 +6,9 @@ void setup() {
     build_command_list();
 }
 void loop() {
-    char cmd[8];
-    read_command(cmd);
-    execute_command(cmd);
+    char cmd[16];
+    if(read_command(cmd)){
+      execute_command(cmd);
+    };
+    delay(10);  //This delay is necessary due to serial timing constraints
 }

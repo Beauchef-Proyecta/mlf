@@ -9,7 +9,7 @@ https://www.arduino.cc/en/Reference/APIStyleGuide
 */
 
 
-/** GPIO PINOUT ===== */
+/** GPIO PINOUT */
 #define SERVO_J0        3
 #define SERVO_J1        5
 #define SERVO_J2        6
@@ -18,12 +18,15 @@ https://www.arduino.cc/en/Reference/APIStyleGuide
 #define BELT_STATUS     8     // manage belt status
 #define BELT_DIRECTION  4  // manage belt forward-backward
 
-/** HOME VALUES ===== */
+/** HOME VALUES */
 #define HOME_J0         90
 #define HOME_J1         90
 #define HOME_J2         90
 #define HOME_GRIPPER    90
 
+
+/** SERIAL CONSTANTS */
+#define HEADER          0xA0
 
 /** COMMAND LIST ADDRESSES */
 #define CMD_JOINT       0x10
@@ -44,6 +47,6 @@ void setup_serial();
 
 void setup_components();
 
-void read_command(char* buffer);
+bool read_command(char* buffer);
 
 int execute_command(char* cmd);
