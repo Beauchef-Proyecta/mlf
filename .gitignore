@@ -43,3 +43,6 @@ dev.env
 
 #_pycache
 __pycache__/
+
+# JetBrains
+.idea/
