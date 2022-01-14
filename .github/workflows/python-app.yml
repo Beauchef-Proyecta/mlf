@@ -23,13 +23,9 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-<<<<<<< HEAD
-        python setup.py sdist bdist_wheel
-=======
->>>>>>> parent of 807cf67 (added package install)
+        pip install -e .
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        pip install -e .
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
