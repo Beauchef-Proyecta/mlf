@@ -26,8 +26,6 @@ class SerialControl:
 
     def write_servo(self, id, ang):
         angledata = ang
-        if id == 1:
-            angledata = 2 * angledata
         self.serial.write(('&' + str(id) + ':' + str(angledata)).encode())
 
     def read_status(self):
