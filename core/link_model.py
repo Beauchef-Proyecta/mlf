@@ -9,46 +9,45 @@ from .transformations import (
 
 class Link:
 
-    rotation_map = {'x': rotation_around_x,
+    __rotation_functions = {'x': rotation_around_x,
                     'y': rotation_around_y,
                     'z': rotation_around_z,}
 
-    def __init__(self, length: float, rotation=None,  parent=None):
+    def __init__(self, length: float, axis: str, rotation=None,  parent=None):
         self.parent = parent
         self._length = length
-        self._rotation = rotation if rotation else {'x': 0, 'y': 0, 'z': 0}
-        self.origin_matrix = np.identity(4)
-        self.end_matrix = np.identity(4)
+        if axis not in self.__rotation_functions:
+            raise ValueError("axis must be equal to 'x', 'y', or 'z'")
+        self._axis = axis
+        self._rotation = 0
+        self._origin = np.array([0,0,0,1])
+        self._end = np.array([0,0,0,1])
 
-        if parent:
-            self.set_origin(parent.end_matrix)
-        
-        self.set_pose(self._rotation)
-        
+        if parent:  
+            self.set_origin(parent._end)
+        self.set_pose(rotation)
 
     @property
-    def start_coordinates(self):
-        m = self.origin_matrix
-        return (m[0][3], m[1][3], m[2][3])
+    def origin(self):
+        return np.array(self._origin[0:3])
     
     @property
-    def end_coordinates(self):
-        m = self.end_matrix
-        return (m[0][3], m[1][3], m[2][3])
+    def end(self):
+        return np.array(self._end[0:3])
 
-    def set_origin(self, matrix):
-        self.origin_matrix = matrix
+    def set_origin(self, vector):
+        self._origin = vector
     
-    def set_pose(self, rotation):
-        self.end_matrix = self.origin_matrix.copy()
-        self._rotate(rotation)
-        self.end_matrix = np.dot(self.end_matrix, translation_along_x(self._length))
+    def set_pose(self, rotation=None):
+        self._end = self._origin.copy()
+        self._end = translation_along_x( self._end, self._length)
+        if rotation:
+            self._rotate(rotation)
 
-    def _rotate(self, rotation: dict):
-        for axis, value in rotation.items():
-            if value:
-                R = rotation_map[axis](angle)
-                self.end_matrix = R * self.end_matrix
-                self._rotation[axis] = value
+    def _rotate(self, angle):
+        vector = self._end - self._origin
+        rotated = self.__rotation_functions[self._axis](vector, angle)
+        self._end = self._origin + rotated
+        self._rotation = angle
 
 
