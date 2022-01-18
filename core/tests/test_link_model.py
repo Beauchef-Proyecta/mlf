@@ -11,6 +11,9 @@ class TestLinkModel(unittest.TestCase):
         n = np.array([10, 0, 0, 1])
         np.testing.assert_array_equal(l._origin, m)
         np.testing.assert_array_equal(l._end, n)
+
+    def test_create_link_invalid_axis(self):
+        self.assertRaises(ValueError, Link, 10, 'a')
     
     def test_rotate_link_around_x(self):
         l = Link(length=1, axis='x', rotation=np.pi)
@@ -23,7 +26,7 @@ class TestLinkModel(unittest.TestCase):
         np.testing.assert_almost_equal(l.origin, np.array([0,0,0]))
         np.testing.assert_almost_equal(l.end, np.array([-1,0,0]))
     
-    def test_rotate_link_around_y(self):
+    def test_rotate_link_around_z(self):
         l = Link(length=1, axis='z')
         n = np.array([np.sqrt(2)/2, np.sqrt(2)/2, 0, 1])
         l.set_pose(np.pi/4)
