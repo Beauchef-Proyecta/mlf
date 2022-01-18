@@ -77,7 +77,7 @@ class TestTransformationMatrices(unittest.TestCase):
         q = np.array([
                 [1, 0, 0, 0],
                 [0, np.sqrt(2)/2, -np.sqrt(2)/2, 0],
-                [0, np.sqrt(2)/2, np.sqrt(2)/2, np.sqrt(2)/2],
+                [0, np.sqrt(2)/2, np.sqrt(2)/2, np.sqrt(2)],
                 [0, 0, 0, 1]
             ])
 
@@ -120,6 +120,3 @@ class TestTransformationMatrices(unittest.TestCase):
 
         Rz = rotation_around_z(np.pi)
         np.testing.assert_array_almost_equal(np.dot(Rz, p), q)
-
-if __name__ == "__main__":
-    unittest.main()
