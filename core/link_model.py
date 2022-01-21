@@ -1,53 +1,84 @@
 import numpy as np
 
 from .transformations import (
-                        rotation_around_x, 
-                        rotation_around_y, 
-                        rotation_around_z,
-                        translation_along_x )
+    rotation_around_x,
+    rotation_around_y,
+    rotation_around_z,
+    translation_along_z,
+)
 
 
 class Link:
 
-    __rotation_functions = {'x': rotation_around_x,
-                    'y': rotation_around_y,
-                    'z': rotation_around_z,}
+    __rotation_functions = {
+        "x": rotation_around_x,
+        "y": rotation_around_y,
+        "z": rotation_around_z,
+    }
 
-    def __init__(self, length: float, axis: str, rotation=None,  parent=None):
-        self.parent = parent
+    def __init__(self, length, default_axis, rotation=0):
+        self.parent = None
+        self.child = None
         self._length = length
-        if axis not in self.__rotation_functions:
-            raise ValueError("axis must be equal to 'x', 'y', or 'z'")
-        self._axis = axis
-        self._rotation = 0
-        self._origin = np.array([0,0,0,1])
-        self._end = np.array([0,0,0,1])
+        self._rotation = rotation
 
-        if parent:  
-            self.set_origin(parent._end)
+        if default_axis not in self.__rotation_functions:
+            raise ValueError("axis must be equal to 'x', 'y', or 'z'")
+        self._axis = default_axis
+
+        self._base = np.identity(4)
+        self._T = translation_along_z(self._length)
+        self._R = self.__rotation_functions[self._axis](self._rotation)
         self.set_pose(rotation)
+
+
+    @property
+    def lenght(self):
+        return self._length
+    
+    @property
+    def rotation(self):
+        return self._rotation
 
     @property
     def origin(self):
-        return np.array(self._origin[0:3])
-    
+        if not self.parent:
+            return np.array([0, 0, 0])
+        return self.parent.end
+
     @property
     def end(self):
-        return np.array(self._end[0:3])
-
-    def set_origin(self, vector):
-        self._origin = vector
+        return self._base[:-1, 3]
+        
+    @property
+    def base(self):
+        b = self._base
+        return b[:,0], b[:,1], b[:,2]
     
+    def set_parent(self, parent):
+        self.parent = parent
+        parent.child = self
+        self.set_pose()
+
     def set_pose(self, rotation=None):
-        self._end = self._origin.copy()
-        self._end = translation_along_x( self._end, self._length)
+        self._base = np.identity(4)
+        
         if rotation:
-            self._rotate(rotation)
+            self._rotation = rotation
+            self._R = self.__rotation_functions[self._axis](self._rotation)
+        
+        self._base = np.matmul(self._T, self._base)
+        self._base = np.matmul(self._R, self._base)
+        if self.parent:
+            self._base = np.matmul(self.parent._base, self._base)
 
-    def _rotate(self, angle):
-        vector = self._end - self._origin
-        rotated = self.__rotation_functions[self._axis](vector, angle)
-        self._end = self._origin + rotated
-        self._rotation = angle
+        self._propagate_pose_to_child()
 
-
+    def _propagate_pose_to_child(self):
+        child = self.child
+        while child:
+            child._base = np.identity(4)
+            child._base = np.matmul(child._T, child._base)
+            child._base = np.matmul(child._R, child._base)
+            child._base = np.matmul(child.parent._base, child._base)
+            child = child.child

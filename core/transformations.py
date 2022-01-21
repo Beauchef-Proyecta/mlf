@@ -1,46 +1,46 @@
 import numpy as np
 
 
-def rotation_around_x(vector, angle):
+def rotation_around_x(angle):
     R = np.array([
         [1, 0, 0, 0],
         [0, np.cos(angle), -np.sin(angle), 0],
         [0, np.sin(angle), np.cos(angle), 0],
         [0, 0, 0, 1],
     ])
-    return np.matmul(R, vector)
+    return R
 
 
-def rotation_around_z(vector, angle):
+def rotation_around_z(angle):
     R = np.array([
         [np.cos(angle), -np.sin(angle), 0, 0],
         [np.sin(angle), np.cos(angle), 0, 0],
         [0, 0, 1, 0],
         [0, 0, 0, 1],
     ])
-    return np.matmul(R, vector)
+    return R
 
 
-def rotation_around_y(vector, angle):
+def rotation_around_y(angle):
     R = np.array([
         [np.cos(angle), 0, np.sin(angle), 0],
         [0, 1, 0, 0],
         [-np.sin(angle), 0, np.cos(angle), 0],
         [0, 0, 0, 1],
     ])
-    return np.matmul(R, vector)
+    return R
 
 
-def translation_along_x(vector, distance):
+def translation_along_x(distance):
     T = np.array([[1, 0, 0, distance], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
-    return np.matmul(T, vector)
+    return T
 
 
-def translation_along_y(vector, distance):
+def translation_along_y(distance):
     T = np.array([[1, 0, 0, 0], [0, 1, 0, distance], [0, 0, 1, 0], [0, 0, 0, 1]])
-    return np.matmul(T, vector)
+    return T
 
 
-def translation_along_z(vector, distance):
+def translation_along_z(distance):
     T = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, distance], [0, 0, 0, 1]])
-    return np.matmul(T, vector)
+    return T
