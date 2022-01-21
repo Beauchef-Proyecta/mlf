@@ -1,7 +1,7 @@
 from .link_model import Link
 
 
-class Robot:
+class GenericRobot:
     def __init__(self, build_instructions: dict):
         self._links = []
         self._home = []

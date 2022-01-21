@@ -1,16 +1,16 @@
 import unittest
 import numpy as np
 
-from core.robot_model import Robot
+from core.generic_robot import GenericRobot
 
 
-class TestRobotModel(unittest.TestCase):
+class TestGenericRobot(unittest.TestCase):
     def test_create_single_link_robot(self):
         instructions = {
             0: {"length": 1, "axis": "x", "rotation": 0, "parent": None},
         }
 
-        r = Robot(instructions).assemble()
+        r = GenericRobot(instructions).assemble()
 
         self.assertEqual(len(r._links), 1)
         np.testing.assert_equal(r.get_pose[0], np.array([0, 0, 1]))
@@ -21,7 +21,7 @@ class TestRobotModel(unittest.TestCase):
             1: {"length": 1, "axis": "y", "rotation": 0, "parent": 0},
         }
 
-        r = Robot(instructions).assemble()
+        r = GenericRobot(instructions).assemble()
 
         self.assertEqual(len(r._links), 2)
         self.assertEqual(r._links[0], r._links[1].parent)
@@ -36,7 +36,7 @@ class TestRobotModel(unittest.TestCase):
             2: {"length": 1, "axis": "y", "rotation": 0, "parent": 1},
         }
 
-        r = Robot(instructions).assemble()
+        r = GenericRobot(instructions).assemble()
         print(r.get_pose)
         r.set_pose([np.pi / 2, np.pi / 2, np.pi / 2])
         print(r.get_pose)
