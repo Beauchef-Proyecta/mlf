@@ -4,8 +4,7 @@ from .link_model import Link
 class GenericRobot:
     def __init__(self, build_instructions: dict):
         self._links = []
-        self._home = []
-        self._limits = []
+        self._rotation = []
         self.build_instructions = build_instructions
 
     def assemble(self):
@@ -15,6 +14,7 @@ class GenericRobot:
             if params["parent"] != None:
                 link.set_parent(self._links[params["parent"]])
             self._links.append(link)
+            self._rotation.append(params["rotation"])
 
         return self
 
