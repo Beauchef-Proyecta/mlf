@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 
-from core.transformations import (
+from core.model.transformations import (
                         rotation_around_x, 
                         rotation_around_y, 
                         rotation_around_z,

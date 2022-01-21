@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 
-from core.link_model import Link
+from core.model.link_model import Link
 
 
 class TestLinkModel(unittest.TestCase):

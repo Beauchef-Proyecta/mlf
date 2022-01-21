@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 
-from core.generic_robot import GenericRobot
+from core.model.generic_robot import GenericRobot
 
 
 class TestGenericRobot(unittest.TestCase):
