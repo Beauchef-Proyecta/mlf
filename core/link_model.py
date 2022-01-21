@@ -53,7 +53,7 @@ class Link:
     @property
     def base(self):
         b = self._base
-        return b[:,0], b[:,1], b[:,2]
+        return b[:-1,0], b[:-1,1], b[:-1,2]
     
     def set_parent(self, parent):
         self.parent = parent

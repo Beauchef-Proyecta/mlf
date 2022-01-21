@@ -9,7 +9,6 @@ class Robot:
         self.build_instructions = build_instructions
 
     def assemble(self):
-        # First create links
         for id, params in self.build_instructions.items():
 
             link = Link(params["length"], params["axis"], params["rotation"])
