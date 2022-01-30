@@ -4,7 +4,7 @@ from serial import Serial
 from serial.serialutil import SerialException
 
 class SerialController:
-    def __init__(self, port="/dev/ttyUSB0"):
+    def __init__(self, port):
         self.port = port
         self.serial = None
 
@@ -24,9 +24,3 @@ class SerialController:
         self.serial.write(data)
         time.sleep(0.01)
         return self.serial.read(2)
-
-    def build_serial_msg(self, cmd: int, params: list):
-        data = [HEADER, len(params) + 1, cmd]
-        for p in params:
-            data.append(p)
-        return bytearray(data)

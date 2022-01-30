@@ -1,4 +1,4 @@
-from .serial_control import SerialController
+from .serial_controller import SerialController
 
 
 class MK2Serial:
@@ -11,8 +11,15 @@ class MK2Serial:
     CMD_PROXIMITY = 0xA0
     CMD_LASER = 0xB0
     
-    def __init__(self):
-        self.serial = SerialController()
+    def __init__(self, port="/dev/ttyUSB0"):
+        self.serial = SerialController(port)
+        self.serial.open()
+    
+    def build_serial_msg(self, cmd: int, params: list):
+        data = [self.HEADER, len(params) + 1, cmd]
+        for p in params:
+            data.append(p)
+        return bytearray(data)
     
     def set_joints(self, angles: list):
         data = self.serial.build_serial_msg(self.CMD_JOINT, angles)
