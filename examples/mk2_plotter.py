@@ -8,7 +8,6 @@ from core.model import MK2Model
 class MK2Plotter:
     def __init__(self):
         self.robot = MK2Model()
-        self.robot.set_pose([0, 30, 90])
         self.fig = plt.figure()
         self.ax = self.fig.add_subplot(111, projection="3d")
         self.sliders = []
@@ -66,14 +65,12 @@ class MK2Plotter:
 
     def update_plot(self, val=None):
         self.robot.set_pose(
-            [self.sliders[0].val, self.sliders[1].val, self.sliders[2].val]
+            self.sliders[0].val, self.sliders[1].val, self.sliders[2].val
         )
         pose = self.robot.get_pose()
 
         self.ax.clear()
-        for name, coords in pose.items():
-            origin = coords[0]
-            end = coords[1]
+        for name, (origin, end) in pose.items():
 
             self.ax.scatter(origin[0], origin[1], origin[2], zdir="z", s=10)
             self.ax.plot(
