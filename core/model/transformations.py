@@ -2,32 +2,38 @@ import numpy as np
 
 
 def rotation_around_x(angle):
-    R = np.array([
-        [1, 0, 0, 0],
-        [0, np.cos(angle), -np.sin(angle), 0],
-        [0, np.sin(angle), np.cos(angle), 0],
-        [0, 0, 0, 1],
-    ])
+    R = np.array(
+        [
+            [1, 0, 0, 0],
+            [0, np.cos(angle), -np.sin(angle), 0],
+            [0, np.sin(angle), np.cos(angle), 0],
+            [0, 0, 0, 1],
+        ]
+    )
     return R
 
 
 def rotation_around_z(angle):
-    R = np.array([
-        [np.cos(angle), -np.sin(angle), 0, 0],
-        [np.sin(angle), np.cos(angle), 0, 0],
-        [0, 0, 1, 0],
-        [0, 0, 0, 1],
-    ])
+    R = np.array(
+        [
+            [np.cos(angle), -np.sin(angle), 0, 0],
+            [np.sin(angle), np.cos(angle), 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1],
+        ]
+    )
     return R
 
 
 def rotation_around_y(angle):
-    R = np.array([
-        [np.cos(angle), 0, np.sin(angle), 0],
-        [0, 1, 0, 0],
-        [-np.sin(angle), 0, np.cos(angle), 0],
-        [0, 0, 0, 1],
-    ])
+    R = np.array(
+        [
+            [np.cos(angle), 0, np.sin(angle), 0],
+            [0, 1, 0, 0],
+            [-np.sin(angle), 0, np.cos(angle), 0],
+            [0, 0, 0, 1],
+        ]
+    )
     return R
 
 

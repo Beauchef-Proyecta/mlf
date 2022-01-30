@@ -1,16 +1,21 @@
 import numpy as np
 
-from .generic_robot import GenericRobot
+from .robot_model import GenericRobot
 
 
-class MK2Robot:
+class MK2Model:
     def __init__(self):
         self._build_instructions = {
-            0: {"length": 55, "axis": "z", "rotation": 0, "parent": None},
-            1: {"length": 39, "axis": "z", "rotation": 0, "parent": 0},
-            2: {"length": 135, "axis": "y", "rotation": 0, "parent": 1},
-            3: {"length": 147, "axis": "y", "rotation": 0 * np.pi/180, "parent": 2},
-            4: {"length": 66, "axis": "y", "rotation": 0, "parent": 3},
+            "link_0": {"length": 55, "axis": "z", "rotation": 0, "parent": None},
+            "link_1": {"length": 39, "axis": "z", "rotation": 0, "parent": "link_0"},
+            "link_2": {"length": 135, "axis": "y", "rotation": 0, "parent": "link_1"},
+            "link_3": {
+                "length": 147,
+                "axis": "y",
+                "rotation": 0 * np.pi / 180,
+                "parent": "link_2",
+            },
+            "link_4": {"length": 66, "axis": "y", "rotation": 0, "parent": "link_3"},
         }
 
         self.model = GenericRobot(self._build_instructions).assemble()
@@ -22,17 +27,17 @@ class MK2Robot:
         q[1] = q[1] * np.pi / 180
         q[2] = q[2] * np.pi / 180
 
-        Q = [0] * 5
-        Q[0] = 0
-        Q[1] = q[0]
-        Q[2] = q[1]
-        Q[3] = q[2]
-        Q[4] = np.pi / 2 - q[1] - q[2]
+        Q = dict()
+        Q["link_0"] = 0
+        Q["link_1"] = q[0]
+        Q["link_2"] = q[1]
+        Q["link_3"] = q[2]
+        Q["link_4"] = np.pi / 2 - q[1] - q[2]
 
         self.model.set_pose(Q)
-    
+
     def get_pose(self):
-        return list(self.model.get_pose)
+        return self.model.get_pose
 
     def check_limits(self):
         pass

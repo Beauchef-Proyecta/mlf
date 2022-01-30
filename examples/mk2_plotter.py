@@ -2,12 +2,12 @@ import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.pyplot import Slider, Button
 
-from core.model.mk2_robot import MK2Robot
+from core.model.mk2_robot import MK2Model
 
 
 class MK2Plotter:
     def __init__(self):
-        self.robot = MK2Robot()
+        self.robot = MK2Model()
         self.robot.set_pose([0, 30, 90])
         self.fig = plt.figure()
         self.ax = self.fig.add_subplot(111, projection="3d")
@@ -68,16 +68,18 @@ class MK2Plotter:
         self.robot.set_pose(
             [self.sliders[0].val, self.sliders[1].val, self.sliders[2].val]
         )
-        pose = [(0, 0, 0)] + self.robot.get_pose()
+        pose = self.robot.get_pose()
 
         self.ax.clear()
-        self.ax.scatter(0, 0, 0, zdir="z", s=10)
-        for i, p in enumerate(pose[1:]):
-            self.ax.scatter(p[0], p[1], p[2], zdir="z", s=10)
+        for name, coords in pose.items():
+            origin = coords[0]
+            end = coords[1]
+
+            self.ax.scatter(origin[0], origin[1], origin[2], zdir="z", s=10)
             self.ax.plot(
-                [pose[i][0], pose[i + 1][0]],
-                [pose[i][1], pose[i + 1][1]],
-                [pose[i][2], pose[i + 1][2]],
+                [origin[0], end[0]],
+                [origin[1], end[1]],
+                [origin[2], end[2]],
             )
 
         self.ax.set_xlabel("X [mm]")
@@ -89,6 +91,7 @@ class MK2Plotter:
         self.ax.set_zlim(0, 500)
 
         self.fig.canvas.draw_idle()
+
 
 if __name__ == "__main__":
     p = MK2Plotter().setup()

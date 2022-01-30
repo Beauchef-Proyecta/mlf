@@ -31,11 +31,10 @@ class Link:
         self._R = self.__rotation_functions[self._axis](self._rotation)
         self.set_pose(rotation)
 
-
     @property
     def lenght(self):
         return self._length
-    
+
     @property
     def rotation(self):
         return self._rotation
@@ -49,12 +48,12 @@ class Link:
     @property
     def end(self):
         return self._base[:-1, 3]
-        
+
     @property
     def base(self):
         b = self._base
-        return b[:-1,0], b[:-1,1], b[:-1,2]
-    
+        return b[:-1, 0], b[:-1, 1], b[:-1, 2]
+
     def set_parent(self, parent):
         self.parent = parent
         parent.child = self
@@ -62,11 +61,11 @@ class Link:
 
     def set_pose(self, rotation=None, propagate=True):
         self._base = np.identity(4)
-        
+
         if rotation:
             self._rotation = rotation
             self._R = self.__rotation_functions[self._axis](self._rotation)
-        
+
         self._base = np.matmul(self._T, self._base)
         self._base = np.matmul(self._R, self._base)
         if self.parent:
