@@ -24,4 +24,4 @@ class GenericRobot:
 
     def set_pose(self, angles):
         for index, angle in enumerate(angles):
-            self._links[index].set_pose(angle)
+            self._links[index].set_pose(angle, propagate=False)

@@ -60,7 +60,7 @@ class Link:
         parent.child = self
         self.set_pose()
 
-    def set_pose(self, rotation=None):
+    def set_pose(self, rotation=None, propagate=True):
         self._base = np.identity(4)
         
         if rotation:
@@ -72,13 +72,8 @@ class Link:
         if self.parent:
             self._base = np.matmul(self.parent._base, self._base)
 
-        self._propagate_pose_to_child()
-
-    def _propagate_pose_to_child(self):
-        child = self.child
-        while child:
-            child._base = np.identity(4)
-            child._base = np.matmul(child._T, child._base)
-            child._base = np.matmul(child._R, child._base)
-            child._base = np.matmul(child.parent._base, child._base)
-            child = child.child
+        if propagate:
+            child = self.child
+            while child:
+                child.set_pose(propagate=False)
+                child = child.child
