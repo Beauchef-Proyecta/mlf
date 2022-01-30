@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.pyplot import Slider, Button
 
-from core.model.mk2_robot import MK2Model
+from core.model import MK2Model
 
 
 class MK2Plotter:
