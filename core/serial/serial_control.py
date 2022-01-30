@@ -1,44 +1,32 @@
-import serial
-from serial import Serial
 import time
 
+from serial import Serial
+from serial.serialutil import SerialException
 
-class SerialControl:
-
+class SerialController:
     def __init__(self, port="/dev/ttyUSB0"):
         self.port = port
         self.serial = None
 
-    def open_serial(self):
+    def open(self):
         try:
-            self.serial = Serial(self.port, 115200, timeout=1, write_timeout=0.1)
+            self.serial = Serial(self.port, 115200)
             print("The port is available")
-            serial_port = "Open"
-            time.sleep(2)
-        except serial.serialutil.SerialException:
+        except SerialException:
             print("The port is at use")
             self.serial.close()
             self.serial.open()
 
-    def close_serial(self):
-        time.sleep(0.2)
+    def close(self):
         self.serial.close()
 
-    def write_servo(self, id, ang):
-        angledata = ang
-        self.serial.write(('&' + str(id) + ':' + str(angledata)).encode())
+    def send_data(self, data):
+        self.serial.write(data)
+        time.sleep(0.01)
+        return self.serial.read(2)
 
-    def read_status(self):
-        ser_status = self.serial.isOpen()
-        print(f"Serial Open: {ser_status}")
-        if ser_status:
-            status = "Working Clean"
-            print(f"status: {status}")
-
-    def read_sensors(self):
-        status = "Not implemented"
-        print(f"Sensor status: {status}")
-
-    def run_effector(self):
-        status = "Not implemented"
-        print(f"Effector status: {status}")
+    def build_serial_msg(self, cmd: int, params: list):
+        data = [HEADER, len(params) + 1, cmd]
+        for p in params:
+            data.append(p)
+        return bytearray(data)
