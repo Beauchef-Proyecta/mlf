@@ -18,4 +18,3 @@ class MK2Serial:
         data = self.serial.build_serial_msg(self.CMD_JOINT, angles)
         return self.serial.send_data(data)
         
-    
