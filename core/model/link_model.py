@@ -32,7 +32,7 @@ class Link:
         self.set_pose(rotation)
 
     @property
-    def lenght(self):
+    def length(self):
         return self._length
 
     @property
@@ -62,7 +62,7 @@ class Link:
     def set_pose(self, rotation=None, propagate=True):
         self._base = np.identity(4)
 
-        if rotation:
+        if isinstance(rotation, (int, float)):
             self._rotation = rotation
             self._R = self.__rotation_functions[self._axis](self._rotation)
 

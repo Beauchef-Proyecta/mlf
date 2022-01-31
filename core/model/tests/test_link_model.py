@@ -9,7 +9,7 @@ class TestLinkModel(unittest.TestCase):
         l = Link(length=0, default_axis="x")
         m = np.array([0, 0, 0])
         n = np.array([0, 0, 0])
-        self.assertEqual(l.lenght, 0)
+        self.assertEqual(l.length, 0)
         self.assertEqual(l.rotation, 0)
         np.testing.assert_array_equal(l.origin, m)
         np.testing.assert_array_equal(l.end, n)
@@ -21,7 +21,7 @@ class TestLinkModel(unittest.TestCase):
         n = np.array([0, 0, 10])
         np.testing.assert_array_equal(l.origin, m)
         np.testing.assert_array_equal(l.end, n)
-        self.assertEqual(l.lenght, 10)
+        self.assertEqual(l.length, 10)
         self.assertEqual(l.rotation, 0)
         np.testing.assert_array_equal(l.base, np.identity(3))
 

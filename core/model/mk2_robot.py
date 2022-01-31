@@ -17,19 +17,19 @@ class MK2Model:
         },
         "link_4": {"length": 66, "axis": "y", "rotation": 0, "parent": "link_3"},
     }
-    
+
     HOME_Q0 = 0
     HOME_Q1 = 0
     HOME_Q2 = 90
 
     def __init__(self):
-        self.model = GenericRobot(self._build_instructions).assemble()        
+        self.model = GenericRobot(self._build_instructions).assemble()
         self.set_pose()  # set to home positions
 
     def set_pose(self, q0=None, q1=None, q2=None):
-        q0 = q0 if q0 else self.HOME_Q0
-        q1 = q1 if q1 else self.HOME_Q1
-        q2 = q2 if q2 else self.HOME_Q2
+        q0 = q0 if isinstance(q0, (int, float)) else self.HOME_Q0
+        q1 = q1 if isinstance(q1, (int, float)) else self.HOME_Q1
+        q2 = q2 if isinstance(q2, (int, float)) else self.HOME_Q2
         
         q0 = q0 * np.pi / 180
         q1 = q1 * np.pi / 180
@@ -49,30 +49,34 @@ class MK2Model:
 
     def inverse_kinematics(self, xyz: tuple):
         x, y, z = xyz
-        q = [0,0,0]
-        links = self.model.links
+        q = [0, 0, 0]
+        l = []
+        for link in self._build_instructions.values():
+            l.append(link["length"])
+        print(l)
 
         q[0] = np.arctan(y / x)
         q[2] = np.arccos(
             (
-                (l1 * np.cos(q[0])) ** 2
-                + (l2 * np.cos(q[0])) ** 2
-                - (x - l3 * np.cos(q[0])) ** 2
-                - (z - z0) ** 2
+                (np.sqrt(x ** 2 + y ** 2) - l[4]) ** 2
+                + (z - l[1] - l[0]) ** 2
+                + -l[2] ** 2
+                + -l[3] ** 2
             )
-            / (2 * l1 * l2 * (np.cos(q[0])) ** 2)
+            / (2 * l[2] * l[3])
         )
-        q[1] = -np.arctan((x - l3 * np.cos(q[0])) / (z - z0)) + np.arccos(
-            (
-                (l1 * np.cos(q[0])) ** 2
-                + (x - l3 * np.cos(q[0])) ** 2
-                + (z - z0) ** 2
-                - (l2 * np.cos(q[0])) ** 2
+                
+        q[1] = (
+            np.pi / 2
+            + -np.arctan(
+                (z - l[1] - l[0])
+                / (np.sqrt(x ** 2 + y ** 2) - l[4])
             )
-            / (2 * l1 * np.cos(q[0]) * np.sqrt(x ** 2 + z ** 2))
+            + -np.arctan(
+                (l[3] * np.sin(q[2]))
+                / (l[2] + l[3] * np.cos(q[2]))
+            )
         )
-        if z < 94:  # Experimentalmente funciona :)
-            q[1] = q[1] - np.pi
 
         q0 = np.round(q[0] * 180 / np.pi, 0)
         q1 = np.round(q[1] * 180 / np.pi, 0)
