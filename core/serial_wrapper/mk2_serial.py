@@ -22,6 +22,6 @@ class MK2Serial:
         return bytearray(data)
     
     def set_joints(self, angles: list):
-        data = self.serial.build_serial_msg(self.CMD_JOINT, angles)
+        data = self.build_serial_msg(self.CMD_JOINT, angles)
         return self.serial.send_data(data)
         
