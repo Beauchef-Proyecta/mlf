@@ -2,10 +2,11 @@ import math
 from flask import Flask, request
 
 from core.model.mk2_robot import MK2Model
+from core.serial_wrapper.mk2_serial import MK2Serial
 
 app = Flask(__name__)
 mk2 = MK2Model()
-
+mk2_serial = MK2Serial()
 
 @app.route("/")
 def home():
@@ -35,6 +36,11 @@ def move_xyz():
             f"Parece que no puedo llegar a esa posición -- \n"
             f"({x_new}, {y_new}, {z_new}) - error: {error}"
         )
+
+    print(f"{q0}, {q1}, {q2}")
+    angles = [int(q0*2+90) & 0xFF, int(q1+90) & 0xFF, int(180-q2) & 0xFF]
+    print(f"{angles}")
+    s = mk2_serial.set_joints(angles)
 
     return f"Me moví a (x, y, x): {(x_new, y_new, z_new)} - error: {error}"
 
