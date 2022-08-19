@@ -24,13 +24,11 @@ class MK2Model:
 
     def __init__(self):
         self.model = GenericRobot(self._build_instructions).assemble()
-        self.set_pose()  # set to home positions
 
-    def set_pose(self, q0=None, q1=None, q2=None):
-        q0 = q0 if isinstance(q0, (int, float)) else self.HOME_Q0
-        q1 = q1 if isinstance(q1, (int, float)) else self.HOME_Q1
-        q2 = q2 if isinstance(q2, (int, float)) else self.HOME_Q2
-        
+    def home(self):
+        self.set_pose(self.HOME_Q0, self.HOME_Q1, self.HOME_Q2)  # set to home positions
+
+    def set_pose(self, q0, q1, q2):
         q0 = q0 * np.pi / 180
         q1 = q1 * np.pi / 180
         q2 = q2 * np.pi / 180
@@ -48,14 +46,16 @@ class MK2Model:
         return self.model.get_pose
 
     def inverse_kinematics(self, xyz: tuple):
+        # Aux variables for code readibility
         x, y, z = xyz
         q = [0, 0, 0]
         l = []
         for link in self._build_instructions.values():
             l.append(link["length"])
-        print(l)
 
+        # Calculations
         q[0] = np.arctan(y / x)
+        
         q[2] = np.arccos(
             (
                 (np.sqrt(x ** 2 + y ** 2) - l[4]) ** 2
@@ -65,19 +65,14 @@ class MK2Model:
             )
             / (2 * l[2] * l[3])
         )
-                
+        
         q[1] = (
             np.pi / 2
-            + -np.arctan(
-                (z - l[1] - l[0])
-                / (np.sqrt(x ** 2 + y ** 2) - l[4])
-            )
-            + -np.arctan(
-                (l[3] * np.sin(q[2]))
-                / (l[2] + l[3] * np.cos(q[2]))
-            )
+            + -np.arctan((z - l[1] - l[0]) / (np.sqrt(x ** 2 + y ** 2) - l[4]))
+            + -np.arctan((l[3] * np.sin(q[2])) / (l[2] + l[3] * np.cos(q[2])))
         )
 
+        # Formatting
         q0 = np.round(q[0] * 180 / np.pi, 0)
         q1 = np.round(q[1] * 180 / np.pi, 0)
         q2 = np.round(q[2] * 180 / np.pi, 0)

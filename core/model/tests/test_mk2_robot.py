@@ -7,6 +7,7 @@ from core.model import MK2Model
 class TestMK2Model(unittest.TestCase):
     def test_setup_robot(self):
         r = MK2Model()
+        r.home()
         pose = r.get_pose()
 
         desired_pose = {
@@ -22,7 +23,7 @@ class TestMK2Model(unittest.TestCase):
 
     def test_turn_left(self):
         r = MK2Model()
-        r.set_pose(q0=45)
+        r.set_pose(45, r.HOME_Q1, r.HOME_Q2)
         pose = r.get_pose()
 
         desired_pose = {
@@ -38,7 +39,7 @@ class TestMK2Model(unittest.TestCase):
 
     def test_turn_right(self):
         r = MK2Model()
-        r.set_pose(q0=-45)
+        r.set_pose(-45, r.HOME_Q1, r.HOME_Q2)
         pose = r.get_pose()
 
         desired_pose = {
