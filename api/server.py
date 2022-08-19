@@ -36,7 +36,7 @@ def move_xyz():
             f"({x_new}, {y_new}, {z_new}) - error: {error}"
         )
 
-    return f"Me moví a (x, y, x): {(x_new, y_new, x_new)}"
+    return f"Me moví a (x, y, x): {(x_new, y_new, z_new)} - error: {error}"
 
 
 if __name__ == "__main__":
