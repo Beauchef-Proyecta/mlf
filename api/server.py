@@ -20,29 +20,21 @@ def connect():
 
 @app.route("/move")
 def move_xyz():
+    return f"No disponible por el momento ¯\_(ツ)_/¯"
 
-    x = float(request.args.get("x"))
-    y = float(request.args.get("y"))
-    z = float(request.args.get("z"))
-    q0, q1, q2 = mk2.inverse_kinematics((x, y, z))
-    mk2.set_pose(q0, q1, q2)
-    pose = mk2.get_pose()
-    [x_new, y_new, z_new] = [int(a) for a in pose["link_4"][1]]
 
-    error = math.sqrt((x_new - x) ** 2 + (y_new - y) ** 2 + (z_new - z) ** 2)
+@app.route("/set_joints")
+def set_joints():
+    q0 = request.args.get("q0")
+    q1 = request.args.get("q1")
+    q2 = request.args.get("q2")
 
-    if error >= 10:
-        return (
-            f"Parece que no puedo llegar a esa posición -- \n"
-            f"({x_new}, {y_new}, {z_new}) - error: {error}"
-        )
+    s0 = (90 - int(q0) * 2) & 0xFF
+    s1 = (90 + int(q1)) & 0xFF
+    s2 = (180 - int(q2)) & 0xFF
 
-    print(f"{q0}, {q1}, {q2}")
-    angles = [int(q0*2+90) & 0xFF, int(q1+90) & 0xFF, int(180-q2) & 0xFF]
-    print(f"{angles}")
-    s = mk2_serial.set_joints(angles)
-
-    return f"Me moví a (x, y, x): {(x_new, y_new, z_new)} - error: {error}"
+    mk2_serial.set_joints([s0, s1, s2])
+    return f"Mi nueva pose es: (q0={q0}, q1={q1}, q2={q2})"
 
 
 if __name__ == "__main__":
