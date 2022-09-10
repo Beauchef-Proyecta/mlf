@@ -31,7 +31,7 @@ def set_joints():
 
     s0 = (90 - int(q0) * 2) & 0xFF
     s1 = (90 + int(q1)) & 0xFF
-    s2 = (180 - int(q2)) & 0xFF
+    s2 = (180 - int(q2) - int(q1)) & 0xFF
 
     mk2_serial.set_joints([s0, s1, s2])
     return f"Mi nueva pose es: (q0={q0}, q1={q1}, q2={q2})"
