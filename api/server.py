@@ -1,12 +1,15 @@
 import math
-from flask import Flask, request
+from flask import Flask, request, Response, Blueprint, make_response
 
 from core.model.mk2_robot import MK2Model
 from core.serial_wrapper.mk2_serial import MK2Serial
+from api.video_feed import VideoFeed
 
 app = Flask(__name__)
 mk2 = MK2Model()
-mk2_serial = MK2Serial()
+# mk2_serial = MK2Serial()
+video_feed_builder = VideoFeed()
+
 
 @app.route("/")
 def home():
@@ -20,7 +23,7 @@ def connect():
 
 @app.route("/move")
 def move_xyz():
-    return f"No disponible por el momento ¯\_(ツ)_/¯"
+    return "No disponible por el momento ¯\_(ツ)_/¯"
 
 
 @app.route("/set_joints")
@@ -33,8 +36,22 @@ def set_joints():
     s1 = (90 + int(q1)) & 0xFF
     s2 = (180 - int(q2)) & 0xFF
 
-    mk2_serial.set_joints([s0, s1, s2])
+    # mk2_serial.set_joints([s0, s1, s2])
     return f"Mi nueva pose es: (q0={q0}, q1={q1}, q2={q2})"
+
+
+@app.route("/video_feed", methods=["GET"])
+def video_feed():
+    return Response(
+        video_feed_builder.gen(), mimetype="multipart/x-mixed-replace; boundary=frame"
+    )
+
+
+@app.route("/get_frame", methods=["GET"])
+def single_frame():
+    response = make_response(video_feed_builder.grab_single_frame())
+    response.headers["Content-Type"] = "image/jpg"
+    return response
 
 
 if __name__ == "__main__":
