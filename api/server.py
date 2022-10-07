@@ -7,7 +7,7 @@ from api.video_feed import VideoFeed
 
 app = Flask(__name__)
 mk2 = MK2Model()
-# mk2_serial = MK2Serial()
+mk2_serial = MK2Serial()
 video_feed_builder = VideoFeed()
 
 
@@ -36,7 +36,7 @@ def set_joints():
     s1 = (90 + int(q1)) & 0xFF
     s2 = (180 - int(q2)) & 0xFF
 
-    # mk2_serial.set_joints([s0, s1, s2])
+    mk2_serial.set_joints([s0, s1, s2])
     return f"Mi nueva pose es: (q0={q0}, q1={q1}, q2={q2})"
 
 
