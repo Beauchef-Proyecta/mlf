@@ -50,7 +50,7 @@ def set_magnet_servo():
 def set_magnet_status():
     state = request.args.get("state")
     s = int(state) & 0xFF 
-    mk2_serial.set_magnet_status(s)
+    mk2_serial.set_magnet_status([s])
     return f"Estado del iman: {state}"
 
 @app.route("/video_feed", methods=["GET"])
