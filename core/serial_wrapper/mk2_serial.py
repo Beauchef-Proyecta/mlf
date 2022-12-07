@@ -31,4 +31,4 @@ class MK2Serial:
 
     def set_magnet_status(self, state: list):
         data = self.build_serial_msg(self.CMD_MAGNET, state)
-        return self.serial
+        return self.serial.send_data(data)
