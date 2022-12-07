@@ -39,6 +39,19 @@ def set_joints():
     mk2_serial.set_joints([s0, s1, s2])
     return f"Mi nueva pose es: (q0={q0}, q1={q1}, q2={q2})"
 
+@app.route("/set_magnet_servo", methods=["GET"])
+def set_magnet_servo():
+    q = request.args.get("q")
+    s = int(q) & 0xFF
+    mk2_serial.set_magnet_servo([s])
+    return f"La pose del iman es: {q}"
+
+@app.route("/set_magnet_status", methods=["GET"])
+def set_magnet_status():
+    state = request.args.get("state")
+    s = int(state) & 0xFF 
+    mk2_serial.set_magnet_status(s)
+    return f"Estado del iman: {state}"
 
 @app.route("/video_feed", methods=["GET"])
 def video_feed():

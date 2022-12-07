@@ -24,4 +24,11 @@ class MK2Serial:
     def set_joints(self, angles: list):
         data = self.build_serial_msg(self.CMD_JOINT, angles)
         return self.serial.send_data(data)
-        
+
+    def set_magnet_servo(self, angles: list):
+        data = self.build_serial_msg(self.CMD_GRIPPER, angles)
+        return self.serial.send_data(data)
+
+    def set_magnet_status(self, state: list):
+        data = self.build_serial_msg(self.CMD_MAGNET, state)
+        return self.serial
